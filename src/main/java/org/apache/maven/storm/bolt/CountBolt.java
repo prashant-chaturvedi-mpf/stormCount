@@ -11,28 +11,29 @@ import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
 
+@SuppressWarnings("serial")
 public class CountBolt extends BaseRichBolt{
 	
-	private OutputCollector ocollector;
-	private HashMap<String, Long> counts = null;
+	private OutputCollector outputCollector;
+	private HashMap<String, Integer> counts = null;
 	
 	//To establish the input stream for the current bolt
 	public void prepare(Map config, TopologyContext context,
-			OutputCollector collector) {
-		this.ocollector = collector;
-		this.counts = new HashMap<String, Long>();
+			OutputCollector outputCollector) {
+		this.outputCollector = outputCollector;
+		this.counts = new HashMap<String, Integer>();
 	}
 	
 	//To process the actual logic on the input Tuple provided ;to get the word count
 	public void execute(Tuple tuple) {
 		String word = tuple.getStringByField("word");
-		Long count = this.counts.get(word);
+		Integer count = this.counts.get(word);
 		if(count == null){
-			count = 0L;
+			count = 0;
 		}
 		count++;
 		this.counts.put(word, count);
-		this.ocollector.emit(new Values(word, count));
+		this.outputCollector.emit(new Values(word, count));
 	}
 	
 	//To declare the output fields which are released from this bolt

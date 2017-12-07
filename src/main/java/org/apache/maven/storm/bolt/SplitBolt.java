@@ -13,13 +13,13 @@ import org.apache.storm.tuple.Values;
 @SuppressWarnings("serial")
 public class SplitBolt extends BaseRichBolt{
 	
-	private OutputCollector ocollector;
+	private OutputCollector outputCollector;
 	
 
 	//To establish the input stream for the current bolt
 	public void prepare(Map config, TopologyContext context,
 			OutputCollector collector) {
-		this.ocollector = collector;
+		this.outputCollector = collector;
 	}
 	
 	//To process the actual logic on the input Tuple provided ; here splitting the complete statements into words
@@ -27,7 +27,7 @@ public class SplitBolt extends BaseRichBolt{
 		String statement = tuple.getStringByField("statement");
 		String[] words = statement.split(" ");
 		for(String word : words){
-			this.ocollector.emit(new Values(word));
+			this.outputCollector.emit(new Values(word));
 		}
 	}
 	

@@ -16,18 +16,18 @@ import org.apache.storm.tuple.Tuple;
 @SuppressWarnings("serial")
 public class DisplayBolt extends BaseRichBolt {
 	
-	private HashMap<String, Long> counts = null;
+	private HashMap<String, Integer> counts = null;
 	
 	//To establish the input stream for the current bolt a Map of word and count
 	public void prepare(Map config, TopologyContext context,
 			OutputCollector collector) {
-		this.counts = new HashMap<String, Long>();
+		this.counts = new HashMap<String, Integer>();
 	}
 	
 	//To process the actual logic on the input Tuple provided ; 
 	public void execute(Tuple tuple) {
 		String word = tuple.getStringByField("word");
-		Long count = tuple.getLongByField("count");
+		Integer count = tuple.getIntegerByField("count");
 		this.counts.put(word, count);
 	}
 
